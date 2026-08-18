@@ -396,7 +396,7 @@
   <div class="note">
     Videos from <b>131</b> YouTube channels, each rated 1-10 against a
     written description of what I care about by a local LLM. Scores below
-    <b>6</b> are left out of this page. Built <span class="built">2026-08-18 19:34 UTC</span>.
+    <b>6</b> are left out of this page. Built <span class="built">2026-08-18 19:38 UTC</span>.
   </div>
 
   <div class="section-head">
@@ -410,7 +410,10 @@
     <h2>Channels</h2>
     <span class="count">by average score</span>
   </div>
-  <div class="channels" id="channels"></div>
+  <div class="rank-head">
+    <span>#</span><span>Channel</span><span aria-hidden="true"></span><span class="avg">Avg</span><span class="n">Videos</span>
+  </div>
+  <div class="ranks" id="channels"></div>
 </main>
 
 <script>
@@ -490,13 +493,16 @@ function render(threshold) {
     .sort((a, b) => b.avg - a.avg || b.count - a.count)
     .slice(0, 40);
 
-  document.getElementById('channels').innerHTML = chans.map(c => {
+  // Same markup as the app's template: the stylesheet is shared, and .rank
+  // carries the grid columns that .pos/.name/.meter/.avg/.n line up against.
+  document.getElementById('channels').innerHTML = chans.map((c, i) => {
     const tier = c.avg >= 9 ? 'tier-high' : (c.avg >= 7 ? 'tier-good' : '');
-    return `<div class="chan-row">
-      <span class="chan-name">${esc(c.name)}</span>
-      <span class="chan-n">${c.count}</span>
-      <span class="meter ${tier}"><span style="width:${(c.avg / 10 * 100).toFixed(1)}%"></span></span>
+    return `<div class="rank ${tier}">
+      <span class="pos">${i + 1}</span>
+      <span class="name">${esc(c.name)}</span>
+      <span class="meter"><span style="width:${(c.avg / 10 * 100).toFixed(1)}%"></span></span>
       <span class="avg">${c.avg.toFixed(1)}</span>
+      <span class="n">${c.count}</span>
     </div>`;
   }).join('');
 }
