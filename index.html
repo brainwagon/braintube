@@ -374,11 +374,22 @@
     color: var(--meta);
   }
 
+  /* The banner is this page's own; .note belongs to the per-card reason text. */
+  .intro {
+    margin: 4px 0 8px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--signal);
+    border-radius: 4px;
+    background: var(--surface);
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--text);
+  }
+
   .controls { align-items: center; }
 
   .controls input[type=range] { accent-color: var(--mark); width: 180px; }
 
-  .empty-note { display: none; }
 </style>
 </head>
 <body>
@@ -393,10 +404,10 @@
 </header>
 
 <main>
-  <div class="note">
+  <div class="intro">
     Videos from <b>131</b> YouTube channels, each rated 1-10 against a
     written description of what I care about by a local LLM. Scores below
-    <b>6</b> are left out of this page. Built <span class="built">2026-08-18 19:38 UTC</span>.
+    <b>6</b> are left out of this page. Built <span class="built">2026-08-18 19:40 UTC</span>.
   </div>
 
   <div class="section-head">
@@ -476,8 +487,8 @@ function render(threshold) {
       </a>
       <div class="card-body">
         <h3 class="card-title"><a href="${esc(v.u)}" target="_blank" rel="noopener">${esc(v.t)}</a></h3>
-        <div class="card-meta"><span class="chan">${esc(v.c)}</span><span class="dot">&middot;</span><span>${timeago(v.p)}</span></div>
-        <p class="why">${esc(v.r)}</p>
+        <div class="card-meta">${esc(v.c)}<span class="dot">&middot;</span>${timeago(v.p)}</div>
+        ${v.r ? `<p class="note">${esc(v.r)}</p>` : ''}
       </div>
     </article>`;
   }).join('');
